@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วันครบรอบของเด็กอ้วงนานา</title>
+    <style>
+        body {
+            background-color: #ffe4e1;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: #ff1493;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 30px;
+            color: #ff6347;
+            margin: 20px 0;
+        }
+
+        .heart {
+            font-size: 100px;
+            color: #ff1493;
+            animation: pulse 1.5s infinite;
+            margin-top: 30px;
+        }
+
+        .message {
+            font-size: 20px;
+            color: #ff4500;
+            margin-top: 30px;
+            transition: transform 1s;
+        }
+
+        .message:hover {
+            transform: scale(1.1);
+        }
+
+        .button {
+            background-color: #ff1493;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 50px;
+            margin-top: 40px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #ff69b4;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .confetti {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: confetti 3s infinite;
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .confetti div {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff1493;
+            animation: fall 1s infinite ease-in-out;
+        }
+
+        .confetti div:nth-child(odd) {
+            background-color: #ff6347;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* รูปภาพ */
+        .image-container {
+            margin-top: 50px;
+        }
+
+        .image-container img {
+            width: 300px;
+            border-radius: 15px;
+            border: 5px solid #ff1493;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ฟอร์มเข้าสู่ระบบ */
+        .login-container {
+            margin-top: 100px;
+        }
+
+        .login-container input {
+            padding: 10px;
+            font-size: 18px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 2px solid #ff1493;
+            width: 300px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .login-container button {
+            background-color: #ff1493;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .login-container button:hover {
+            background-color: #ff69b4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ฟอร์มเข้าสู่ระบบ -->
+    <div class="login-container" id="login-container">
+        <h1>ยินดีต้อนรับ  ใครเอ่ยเด็กอ้วงรึป่าวน้า </h1>
+        <h2>ลองใส่ชื่อตัวเองตรงนี้ดู</h2>
+        <input type="text" id="username" placeholder="ชื่อของคุณ" required>
+        <button onclick="login()">เข้าสู่ระบบ</button>
+    </div>
+
+    <!-- หน้าเว็บหลังจากเข้าสู่ระบบ -->
+    <div id="app" style="display: none;">
+        <div class="image-container">
+          
+        </div>
+        <h1 id="greeting">รักเธอนะ❤️</h1>
+        <h2>วันนี้คือวันครบรอบของเราน้าเด็กอ้วง 🎉</h2>
+
+        <!-- Confetti Animation -->
+        <div class="confetti">
+            <div style="left: 10%; animation-delay: 0.2s;"></div>
+            <div style="left: 20%; animation-delay: 0.3s;"></div>
+            <div style="left: 30%; animation-delay: 0.5s;"></div>
+            <div style="left: 40%; animation-delay: 0.7s;"></div>
+            <div style="left: 50%; animation-delay: 0.9s;"></div>
+            <div style="left: 60%; animation-delay: 1.1s;"></div>
+            <div style="left: 70%; animation-delay: 1.3s;"></div>
+            <div style="left: 80%; animation-delay: 1.5s;"></div>
+        </div>
+
+        <div class="heart">❤️</div>
+
+        <p class="message" id="message">ขอให้เขากับเด็กอ้วงรักกันตลอดไปน้า</p>
+
+        <button class="button" onclick="changeMessage()">กดเพื่ออ่านข้อความใหม่</button>
+    </div>
+
+    <script>
+        // ฟังก์ชันเข้าสู่ระบบ
+        function login() {
+            var username = document.getElementById('username').value;
+            if (username) {
+                // ซ่อนฟอร์มและแสดงเนื้อหาเว็บ
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('greeting').textContent = `สวัสดี ${username} รักเธอนะ ❤️`;
+            } else {
+                alert('กรุณากรอกชื่อก่อนเข้าสู่ระบบ');
+            }
+        }
+
+        // ข้อความที่จะแสดง
+        let messages = [
+            "เธอคือทุกสิ่งในชีวิตฉัน 💖",
+            "ขอบคุณที่ทำให้ชีวิตฉันมีความสุขทุกวัน 😘",
+            "ฉันรักเธอมากกว่าเมื่อวาน แต่ไม่มากกว่าพรุ่งนี้ 💞",
+            "ฉันพร้อมที่จะเดินไปข้างหน้ากับเธอเสมอ 🥰",
+            "ฉันคิดถึงเธอตลอดเวลา 💭",
+            "เธอทำให้ทุกวันของฉันเป็นวันพิเศษ 🌸",
+            "การมีเธอในชีวิตทำให้ฉันยิ้มได้ทุกวัน 😊",
+            "เธอคือคนที่ทำให้ฉันรู้สึกสมบูรณ์ 💫",
+            "รักเธอที่สุดในโลก 🌍",
+            "ขอให้ความรักของเรายั่งยืนไปตลอดกาล 💘",
+            "ทุกครั้งที่เรามีความสุขด้วยกัน ฉันรู้สึกเหมือนฝัน 💭"
+        ];
+
+        // ฟังก์ชันที่เปลี่ยนข้อความ
+        function changeMessage() {
+            let randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('message').textContent = randomMessage;
+        }
+    </script>
+</body>
+</html>
